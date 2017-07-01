@@ -36,6 +36,10 @@ void Cell::set_g_value(float g_value) {
     this->g_value = g_value;
 }
 
+void Cell::set_g_and_h(float g_and_h) {
+    this->g_and_h = g_and_h;
+}
+
 int Cell::get_x(void) {
     return x;
 }
@@ -58,4 +62,8 @@ std::vector<Cell*>* Cell::get_neighbours(void) {
 
 float Cell::get_g_value(void) {
     return g_value;
+}
+
+float Cell::get_g_and_h(void) {
+    return g_and_h;
 }

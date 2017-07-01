@@ -18,11 +18,13 @@ public:
     void set_g_value(float g_value);
     void set_parent(Cell* parent);
     void set_blocked(bool blocked);
+    void set_g_and_h(float g_and_h);
 
     //getters
     int get_x(void);
     int get_y(void);
     float get_g_value(void);
+    float get_g_and_h(void);
     Cell* get_parent(void);
     std::vector<Cell*>* get_neighbours(void);
     bool get_blocked(void);
@@ -30,6 +32,7 @@ protected:
     int x;
     int y;
     float g_value;
+    float g_and_h;
     Cell* parent;
     std::vector<Cell*> neighbours;
     bool blocked;

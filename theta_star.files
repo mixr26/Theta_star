@@ -1,3 +1,5 @@
+theta_star.cpp
+theta_star.h
 maze.cpp
 maze.h
 cell.cpp
