@@ -1,3 +1,5 @@
+my_queue.cpp
+my_queue.h
 theta_star.cpp
 theta_star.h
 maze.cpp
