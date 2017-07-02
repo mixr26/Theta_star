@@ -1,8 +1,6 @@
 #ifndef CELL_H
 #define CELL_H
 
-#define DIRECTIONS 4
-
 #include <iostream>
 #include <math.h>
 #include <vector>

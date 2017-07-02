@@ -1,4 +1,4 @@
-#include "my_queue.h"
+#include "../include/my_queue.h"
 
 bool My_queue::find(Cell* s) {
     for (auto it = this->c.begin(); it != this->c.end(); ++it) {

@@ -1,4 +1,4 @@
-#include "cell.h"
+#include "../include/cell.h"
 
 Cell::Cell(int x, int y, bool blocked) {
     this->x = x;

@@ -1,5 +1,5 @@
 #include <iostream>
-#include "theta_star.h"
+#include "../include/theta_star.h"
 
 using namespace std;
 

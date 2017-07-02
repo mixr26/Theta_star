@@ -1,7 +1,11 @@
-#include "theta_star.h"
+#include "../include/theta_star.h"
 
 Theta_star::Theta_star() {
 
+}
+
+Maze* Theta_star::get_maze(void) {
+    return &m;
 }
 
 float Theta_star::heuristic(Cell* s, Cell* goal) {
@@ -78,43 +82,6 @@ bool Theta_star::line_of_sight(Cell* s, Cell* ss) {
     }
 
     return true;
-
-    /*
-    int x0 = s->get_x();
-    int y0 = s->get_y();
-    int x1 = ss->get_x();
-    int y1 = ss->get_y();
-    int dx = abs(x1 - x0);
-    int dy = abs(y1 - y0);
-    int x = x0;
-    int y = y0;
-    int n = 1 + dx + dy;
-    int x_inc = (x1 > x0) ? 1 : -1;
-    int y_inc = (y1 > y0) ? 1 : -1;
-    int error = dx - dy;
-    dx *= 2;
-    dy *= 2;
-
-    for (; n > 0; --n)
-    {
-        if (m.maze[y][x].get_blocked()) {
-            return false;
-        }
-
-        if (error > 0)
-        {
-            y += y_inc;
-            error += dx;
-        }
-        else
-        {
-            x += x_inc;
-            error -= dy;
-        }
-    }
-
-    return true;
-    */
 }
 
 void Theta_star::reconstruct_path(Cell* s) {

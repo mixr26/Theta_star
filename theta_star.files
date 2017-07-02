@@ -1,5 +1,14 @@
+include/cell.h
+include/maze.h
+include/my_queue.h
+include/theta_star.h
 my_queue.cpp
 my_queue.h
+src/cell.cpp
+src/main.cpp
+src/maze.cpp
+src/my_queue.cpp
+src/theta_star.cpp
 theta_star.cpp
 theta_star.h
 maze.cpp
