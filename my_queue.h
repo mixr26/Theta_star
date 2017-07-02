@@ -3,13 +3,13 @@
 #include <queue>
 #include "cell.h"
 
-struct less_than {
+struct greater_than {
     bool operator()(Cell* const& lhs, Cell* const& rhs) const {
         return lhs->get_g_and_h() > rhs->get_g_and_h();
     }
 };
 
-class My_queue : public std::priority_queue<Cell*, std::vector<Cell*>, less_than> {
+class My_queue : public std::priority_queue<Cell*, std::vector<Cell*>, greater_than> {
 public:
     bool find(Cell* s);
     void remove(Cell* s);

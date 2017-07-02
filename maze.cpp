@@ -67,6 +67,12 @@ Maze::Maze() {
         }
     }
 
+    //obstacle testing
+    for (int i = 2; i < MAZE_WIDTH - 2; i++) {
+        maze[10][i].set_blocked(true);
+        maze[11][i].set_blocked(true);
+        maze[9][i].set_blocked(true);
+    }
 }
 
 void Maze::print_maze(void) {

@@ -1,7 +1,7 @@
 #include "my_queue.h"
 
 bool My_queue::find(Cell* s) {
-    for (auto it = this->c.cbegin(); it != this->c.cend(); ++it) {
+    for (auto it = this->c.begin(); it != this->c.end(); ++it) {
         if (*it == s) {
             return true;
         }
@@ -11,6 +11,10 @@ bool My_queue::find(Cell* s) {
 }
 
 void My_queue::remove(Cell* s) {
-
+    for (std::vector<Cell*>::iterator it = this->c.begin(); it != this->c.end(); ++it) {
+        if (*it == s) {
+            this->c.erase(it);
+        }
+    }
 }
 
