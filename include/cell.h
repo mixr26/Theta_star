@@ -6,6 +6,14 @@
 #include <vector>
 
 class Cell {
+protected:
+    int x;
+    int y;
+    float g_value;
+    float g_and_h;
+    Cell* parent;
+    std::vector<Cell*> neighbours;
+    bool blocked;
 public:
     Cell(int x, int y, bool blocked);
     Cell(void);
@@ -26,14 +34,6 @@ public:
     Cell* get_parent(void);
     std::vector<Cell*>* get_neighbours(void);
     bool get_blocked(void);
-protected:
-    int x;
-    int y;
-    float g_value;
-    float g_and_h;
-    Cell* parent;
-    std::vector<Cell*> neighbours;
-    bool blocked;
 };
 
 #endif // CELL_H

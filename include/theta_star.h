@@ -2,7 +2,6 @@
 #define THETA_STAR_H
 #include "maze.h"
 #include "my_queue.h"
-#include <set>
 
 class Theta_star
 {
@@ -20,9 +19,8 @@ protected:
 public:
     Maze m;
 
-    Theta_star();
+    Theta_star(void);
     std::vector<Cell*> do_the_magic(Cell* start, Cell* goal);
-    Maze* get_maze(void);
 };
 
 #endif // THETA_STAR_H

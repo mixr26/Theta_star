@@ -1,12 +1,6 @@
 #include "../include/theta_star.h"
 
-Theta_star::Theta_star() {
-
-}
-
-Maze* Theta_star::get_maze(void) {
-    return &m;
-}
+Theta_star::Theta_star(void) {}
 
 float Theta_star::heuristic(Cell* s, Cell* goal) {
     float dx = abs(s->get_x() - goal->get_x());
@@ -99,8 +93,8 @@ void Theta_star::reconstruct_path(Cell* s) {
 }
 
 bool Theta_star::is_in_closed(Cell* s) {
-    for (int i = 0; i < closed.size(); i++) {
-        if (s == closed[i]) {
+    for (auto it = closed.begin(); it != closed.end(); ++it) {
+        if (s == *it) {
             return true;
         }
     }
@@ -154,8 +148,8 @@ std::vector<Cell*> Theta_star::do_the_magic(Cell* start, Cell* goal) {
 
         closed.push_back(s);
         neighbours = s->get_neighbours();
-        for (int i = 0; i < s->get_neighbours()->size(); i++) {
-            Cell* n = (*neighbours)[i];
+        for (auto it = neighbours->begin(); it != neighbours->end(); ++it) {
+            Cell* n = *it;
             if (!is_in_closed(n)) {
                 if (!open.find(n)) {
                     n->set_g_value(INFINITY);

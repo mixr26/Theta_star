@@ -11,7 +11,7 @@ bool My_queue::find(Cell* s) {
 }
 
 void My_queue::remove(Cell* s) {
-    for (std::vector<Cell*>::iterator it = this->c.begin(); it != this->c.end(); ++it) {
+    for (auto it = this->c.begin(); it != this->c.end(); ++it) {
         if (*it == s) {
             this->c.erase(it);
         }

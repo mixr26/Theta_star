@@ -1,10 +1,10 @@
 #include "../include/maze.h"
 
-Maze::Maze() {
+Maze::Maze(void) {
     preprocess_maze();
 
     //obstacle testing
-    for (int i = 2; i < MAZE_HEIGHT - 2; i++) {
+    for (int i = 1; i < MAZE_HEIGHT; i++) {
         maze[i][15].set_blocked(true);
     }
 
@@ -67,7 +67,8 @@ void Maze::print_maze(void) {
 
 void Maze::print_cell_neighbours(int x, int y) {
     std::vector<Cell*>* neigh = maze[y][x].get_neighbours();
-    for (int i = 0; i < neigh->size(); i++) {
-        std::cout << "x: " << (*neigh)[i]->get_x() << " y: " << (*neigh)[i]->get_y() << std::endl;
+    for (auto it = neigh->begin(); it != neigh->end(); ++it) {
+        Cell* help = *it;
+        std::cout << "x: " << help->get_x() << " y: " << help->get_y() << std::endl;
     }
 }
