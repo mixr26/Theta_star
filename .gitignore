@@ -13,6 +13,9 @@
 *.cflags
 *.cxxflags
 
+build/
+obj/
+
 # Qt-es
 
 /.qmake.cache
