@@ -10,6 +10,9 @@
 *.dll
 *.dylib
 
+*.cflags
+*.cxxflags
+
 # Qt-es
 
 /.qmake.cache
