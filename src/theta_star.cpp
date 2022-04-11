@@ -1,7 +1,8 @@
-#include "../include/theta_star.h"
+#include <algorithm>
 
-Theta_star::Theta_star(void) {}
+#include "theta_star.h"
 
+// Calculates the Euclidean distance between two cells.
 float Theta_star::heuristic(Cell* s, Cell* goal) {
     float dx = abs(s->get_x() - goal->get_x());
     float dy = abs(s->get_y() - goal->get_y());
@@ -9,13 +10,7 @@ float Theta_star::heuristic(Cell* s, Cell* goal) {
     return sqrt(dx * dx + dy * dy);
 }
 
-float Theta_star::compute_cost(Cell* s, Cell* ss) {
-    float dx = abs(s->get_x() - ss->get_x());
-    float dy = abs(s->get_y() - ss->get_y());
-
-    return sqrt(dx * dx + dy * dy);
-}
-
+// Whether the two cells have LoS.
 bool Theta_star::line_of_sight(Cell* s, Cell* ss) {
     int x0 = s->get_x();
     int y0 = s->get_y();
@@ -41,16 +36,16 @@ bool Theta_star::line_of_sight(Cell* s, Cell* ss) {
         while (x0 != x1) {
             f += dy;
             if (f >= dx) {
-                if (m.maze[y0 + (sy - 1) / 2][x0 + (sx - 1) / 2].get_blocked()) {
+                if (maze.get_maze()[y0 + (sy - 1) / 2][x0 + (sx - 1) / 2].is_blocked()) {
                     return false;
                 }
                 y0 += sy;
                 f -= dx;
             }
-            if (f != 0 && m.maze[y0 + (sy - 1) / 2][x0 + (sx - 1) / 2].get_blocked()) {
+            if (f != 0 && maze.get_maze()[y0 + (sy - 1) / 2][x0 + (sx - 1) / 2].is_blocked()) {
                 return false;
             }
-            if (dy == 0 && m.maze[y0][x0 + (sx - 1) / 2].get_blocked() && m.maze[y0 - 1][x0 + (sx - 1) / 2].get_blocked()) {
+            if (dy == 0 && maze.get_maze()[y0][x0 + (sx - 1) / 2].is_blocked() && maze.get_maze()[y0 - 1][x0 + (sx - 1) / 2].is_blocked()) {
                 return false;
             }
             x0 += sx;
@@ -59,16 +54,16 @@ bool Theta_star::line_of_sight(Cell* s, Cell* ss) {
         while (y0 != y1) {
             f += dx;
             if (f >= dy) {
-                if (m.maze[y0 + (sy - 1) / 2][x0 + (sx - 1) / 2].get_blocked()) {
+                if (maze.get_maze()[y0 + (sy - 1) / 2][x0 + (sx - 1) / 2].is_blocked()) {
                     return false;
                 }
                 x0 += sx;
                 f -= dy;
             }
-            if (f != 0 && m.maze[y0 + (sy - 1) / 2][x0 + (sx - 1) / 2].get_blocked()) {
+            if (f != 0 && maze.get_maze()[y0 + (sy - 1) / 2][x0 + (sx - 1) / 2].is_blocked()) {
                 return false;
             }
-            if (dx == 0 && m.maze[y0 + (sy - 1) / 2][x0].get_blocked() && m.maze[y0 + (sy - 1) / 2][x0 - 1].get_blocked()) {
+            if (dx == 0 && maze.get_maze()[y0 + (sy - 1) / 2][x0].is_blocked() && maze.get_maze()[y0 + (sy - 1) / 2][x0 - 1].is_blocked()) {
                 return false;
             }
             y0 += sy;
@@ -78,6 +73,7 @@ bool Theta_star::line_of_sight(Cell* s, Cell* ss) {
     return true;
 }
 
+// Reconstruct the shortest path, following the parents from goal to start cell.
 void Theta_star::reconstruct_path(Cell* s) {
     Cell* prev;
     Cell* next;
@@ -92,20 +88,16 @@ void Theta_star::reconstruct_path(Cell* s) {
     }
 }
 
+// Whether this cell is in the "closed" array.
 bool Theta_star::is_in_closed(Cell* s) {
-    for (auto it = closed.begin(); it != closed.end(); ++it) {
-        if (s == *it) {
-            return true;
-        }
-    }
-
-    return false;
+    return std::find(closed.begin(), closed.end(), s) != closed.end();
 }
 
+// Update the g and h values of cell's neighbours.
 void Theta_star::update_vertex(Cell* s, Cell* neighbour, Cell *goal) {
     if (line_of_sight(s->get_parent(), neighbour)) {
-        if (s->get_parent()->get_g_value() + compute_cost(s->get_parent(), neighbour) < neighbour->get_g_value()) {
-            neighbour->set_g_value(s->get_parent()->get_g_value() + compute_cost(s->get_parent(), neighbour));
+        if (s->get_parent()->get_g_value() + heuristic(s->get_parent(), neighbour) < neighbour->get_g_value()) {
+            neighbour->set_g_value(s->get_parent()->get_g_value() + heuristic(s->get_parent(), neighbour));
             neighbour->set_parent(s->get_parent());
             if (open.find(neighbour)) {
                 open.remove(neighbour);
@@ -114,8 +106,8 @@ void Theta_star::update_vertex(Cell* s, Cell* neighbour, Cell *goal) {
             open.push(neighbour);
         }
     } else {
-        if (s->get_g_value() + compute_cost(s, neighbour) < neighbour->get_g_value()) {
-            neighbour->set_g_value(s->get_g_value() + compute_cost(s, neighbour));
+        if (s->get_g_value() + heuristic(s, neighbour) < neighbour->get_g_value()) {
+            neighbour->set_g_value(s->get_g_value() + heuristic(s, neighbour));
             neighbour->set_parent(s);
             if (open.find(neighbour)) {
                 open.remove(neighbour);
@@ -126,17 +118,15 @@ void Theta_star::update_vertex(Cell* s, Cell* neighbour, Cell *goal) {
     }
 }
 
+// Find the shortest path.
 std::vector<Cell*> Theta_star::do_the_magic(Cell* start, Cell* goal) {
-    //Initialization
     Cell* s;
-    std::vector<Cell*>* neighbours;
 
     start->set_g_value(0);
     start->set_parent(start);
     start->set_g_and_h(start->get_g_value() + heuristic(start, goal));
     open.push(start);
 
-    //Loop
     while (!open.empty()) {
         s = open.top();
         open.pop();
@@ -147,8 +137,8 @@ std::vector<Cell*> Theta_star::do_the_magic(Cell* start, Cell* goal) {
         }
 
         closed.push_back(s);
-        neighbours = s->get_neighbours();
-        for (auto it = neighbours->begin(); it != neighbours->end(); ++it) {
+        auto& neighbours = s->get_neighbours();
+        for (auto it = neighbours.begin(); it != neighbours.end(); ++it) {
             Cell* n = *it;
             if (!is_in_closed(n)) {
                 if (!open.find(n)) {

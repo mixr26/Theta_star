@@ -1,20 +1,16 @@
-#include "../include/my_queue.h"
+#include <algorithm>
 
+#include "my_queue.h"
+
+// Whether a cell exists in the priority queue.
 bool My_queue::find(Cell* s) {
-    for (auto it = this->c.begin(); it != this->c.end(); ++it) {
-        if (*it == s) {
-            return true;
-        }
-    }
-
-    return false;
+    return std::find(this->c.begin(), this->c.end(), s) != this->c.end();
 }
 
+// Remove a cell from the priority queue.
 void My_queue::remove(Cell* s) {
-    for (auto it = this->c.begin(); it != this->c.end(); ++it) {
-        if (*it == s) {
-            this->c.erase(it);
-        }
-    }
+    std::remove_if(this->c.begin(), this->c.end(), [=](Cell* cell) {
+        return cell == s;
+    });
 }
 

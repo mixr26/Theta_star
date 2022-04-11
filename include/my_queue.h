@@ -1,6 +1,8 @@
 #ifndef MY_QUEUE_H
 #define MY_QUEUE_H
+
 #include <queue>
+
 #include "cell.h"
 
 struct greater_than {
@@ -9,9 +11,15 @@ struct greater_than {
     }
 };
 
-class My_queue : public std::priority_queue<Cell*, std::vector<Cell*>, greater_than> {
+// Custom priority queue which allows random access, in addition to standard
+// extracting methods.
+class My_queue : public std::priority_queue<Cell*,
+                                            std::vector<Cell*>,
+                                            greater_than> {
 public:
+    // Whether a cell exists in the priority queue.
     bool find(Cell* s);
+    // Remove a cell from the priority queue.
     void remove(Cell* s);
 };
 
